@@ -25,67 +25,98 @@ class InterurbanoController extends Controller
         return view('interurbano.destino',compact('dados'));
     }
 
-    function calcular(Request $dados){
+    function calcular(Request $request){
         
-        if($dados->plano == '1'){
+        if($request->plano == '1'){
         
-           $horas = explode(":",$dados->minutos);
+           $horas = explode(":",$request->minutos);
            $horas[0] = intval($horas[0]);
            $horas[1] = intval($horas[1]); 
            $minutos = $horas[0] * 60;
            $tlminutos = $minutos+$horas[1];
+
            if($tlminutos < 31){
                $preco = 0;
-            return view('interurbano.resultado',compact('preco'));
+               $dados['complano'] = $preco;
+               $tarifa = \App\Tarifa::find($request->id_tarifa);
+               $semplano = $tarifa->preco;
+               $dados['semplano'] = $tlminutos * $tarifa->preco;
+            return view('interurbano.resultado',compact('dados'));
            }
+
            else{
-                $tarifa = \App\Tarifa::find($dados->id_tarifa);
+
+                $tarifa = \App\Tarifa::find($request->id_tarifa);
+                $semplano = $tlminutos * floatval($tarifa->preco);
                 $tlminutos = $tlminutos - 30;
                 $tarifa->preco = floatval($tarifa->preco);
-                $tarifa->preco = $tarifa->preco * 1.1;
-                $preco = $tlminutos * $tarifa->preco;
-                return view('interurbano.resultado',compact('preco'));                
+                $complano = $tarifa->preco * 1.1;
+                $preco = $tlminutos * $complano;
+                $dados['complano'] = $preco;
+                $dados['semplano'] = $semplano;
+                return view('interurbano.resultado',compact('dados'));                
            }
         }
-        if($dados->plano == '2'){
+        if($request->plano == '2'){
         
-            $horas = explode(":",$dados->minutos);
-            $horas[0] = intval($horas[0]);
-            $horas[1] = intval($horas[1]); 
-            $minutos = $horas[0] * 60;
-            $tlminutos = $minutos+$horas[1];
-            if($tlminutos < 61){
-                $preco = 0;
-             return view('interurbano.resultado',compact('preco'));
-            }
-            else{
-                 $tarifa = \App\Tarifa::find($dados->id_tarifa);
-                 $tlminutos = $tlminutos - 60;
-                 $tarifa->preco = floatval($tarifa->preco);
-                 $tarifa->preco = $tarifa->preco * 1.1;
-                 $preco = $tlminutos * $tarifa->preco;
-                 return view('interurbano.resultado',compact('preco'));                
-            }
+            $horas = explode(":",$request->minutos);
+           $horas[0] = intval($horas[0]);
+           $horas[1] = intval($horas[1]); 
+           $minutos = $horas[0] * 60;
+           $tlminutos = $minutos+$horas[1];
+
+           if($tlminutos < 61){
+               $preco = 0;
+               $dados['complano'] = $preco;
+               $tarifa = \App\Tarifa::find($request->id_tarifa);
+               $semplano = $tarifa->preco;
+               $dados['semplano'] = $tlminutos * $tarifa->preco;
+            return view('interurbano.resultado',compact('dados'));
+           }
+
+           else{
+
+                $tarifa = \App\Tarifa::find($request->id_tarifa);
+                $semplano = $tlminutos * floatval($tarifa->preco);
+                $tlminutos = $tlminutos - 60;
+                $tarifa->preco = floatval($tarifa->preco);
+                $complano = $tarifa->preco * 1.1;
+                $preco = $tlminutos * $complano;
+                $dados['complano'] = $preco;
+                $dados['semplano'] = $semplano;
+                return view('interurbano.resultado',compact('dados'));                
+           }
         }
-        if($dados->plano == '3'){
+        if($request->plano == '3'){
         
-            $horas = explode(":",$dados->minutos);
-            $horas[0] = intval($horas[0]);
-            $horas[1] = intval($horas[1]); 
-            $minutos = $horas[0] * 60;
-            $tlminutos = $minutos+$horas[1];
-            if($tlminutos < 121){
-                $preco = 0;
-             return view('interurbano.resultado',compact('preco'));
-            }
-            else{
-                 $tarifa = \App\Tarifa::find($dados->id_tarifa);
-                 $tlminutos = $tlminutos - 120;
-                 $tarifa->preco = floatval($tarifa->preco);
-                 $tarifa->preco = $tarifa->preco * 1.1;
-                 $preco = $tlminutos * $tarifa->preco;
-                 return view('interurbano.resultado',compact('preco'));                
-            }
+            $horas = explode(":",$request->minutos);
+           $horas[0] = intval($horas[0]);
+           $horas[1] = intval($horas[1]); 
+           $minutos = $horas[0] * 60;
+           $tlminutos = $minutos+$horas[1];
+        //    dd($lminutos);
+
+           if($tlminutos < 121){
+               $preco = 0;
+               $dados['complano'] = $preco;
+               $tarifa = \App\Tarifa::find($request->id_tarifa);
+               $semplano = $tarifa->preco;
+               $dados['semplano'] = $tlminutos * $tarifa->preco;
+            return view('interurbano.resultado',compact('dados'));
+           }
+
+           else{
+
+                $tarifa = \App\Tarifa::find($request->id_tarifa);
+                $semplano = $tlminutos * floatval($tarifa->preco);
+                $tlminutos = $tlminutos - 120;
+                $tarifa->preco = floatval($tarifa->preco);
+                $complano = $tarifa->preco * 1.1;
+                $preco = $tlminutos * $complano;
+                $dados['complano'] = $preco;
+                $dados['semplano'] = $semplano;
+                return view('interurbano.resultado',compact('dados'));                
+           }
         }         
     }
 }

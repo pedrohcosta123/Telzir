@@ -23,7 +23,12 @@
     
         <div class="card py-5 text-center" style="width: 80rem;">
             <div class="card-body">
-                <h5 class="card-title">Valor a pagar R${{$preco}}</h5>
+                <h5 class="card-title">Sem o Plano R${{$dados['semplano']}}</h5>
+                @if($dados['complano'] =='')
+                    <h5 class="card-title">Com o Plano R$0.00</h5>
+                @else
+                <h5 class="card-title">Com o plano R${{$dados['complano']}}</h5>
+                @endif
                 <p class="card-text">Quer simular outro valor? Click em Simular.</p>
                 <a href="{{route('origem')}}" class="btn btn-primary">Simular</a>
                 <a href="/" class="btn btn-primary">Voltar</a>
